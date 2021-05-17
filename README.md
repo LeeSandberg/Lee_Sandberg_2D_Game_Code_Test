@@ -8,9 +8,9 @@ The first commit, the state of it is broken after a reorganisation of the code a
 The parts are tested together with one level, first. 
 
 The managers was added and code has been moved out to the managers. 
-But You can see my process.
 
-The code is done in passes.
+My coding is done in passes.
+
 The diffrent passes have very different focus.
 
 * Keep broken code and return to them later, rather than obsess over them.
@@ -47,7 +47,7 @@ So You can add script to the GameObject.
 Great, but Tilemap can us back what gameobject tile is in a certain tile.
 Tilemap can only do that  with  sprites.
 
-So if you look closly under the boxes (that are gameobjects with sprite renders) there is actuallyu a transparant sprite hiding.
+So if you look under the boxes (that are gameobjects with sprite renders) there is actuallyu a transparant sprite hiding.
 Which we also have to move when the gameobject box moves. The Box moves by getting to be a child och character for a while and moves with the character.
 However sprite under the box moves one tile at a time.
 
