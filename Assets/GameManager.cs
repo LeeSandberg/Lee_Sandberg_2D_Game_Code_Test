@@ -97,7 +97,8 @@ public class GameManager : MonoBehaviour
     public void AllBoxesArePlaced() 
     {
         Debug.Log("Congratulations You have finished this level !");
-        GetComponent<MenuManager>().HideButtonsAndMenus(false);
+        GetComponent<MenuManager>().ButtonMenu.SetActive(true);
+        GetComponent<MenuManager>().NextLevelButton.SetActive(true);
         GetComponent<Timer>().EndTimer();
         GetComponent<StoreManager>().StoreResultInDictionary();
 

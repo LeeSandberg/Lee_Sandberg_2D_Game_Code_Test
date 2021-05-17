@@ -20,39 +20,24 @@ public class MenuManager : MonoBehaviour
     private void Awake()
     {
         // Todo: add RemoveListner when it quits or loads level.
+        // Todo: trying the trick with -1 in value in the inspector on Dropdown when having just one option.
+        DropDownMenu.SetActive(false);
+        DropDownMenu.GetComponent<Dropdown>().value = -1;
         Dropdown dropdown = DropDownMenu.GetComponent<Dropdown>();
+        // Todo: Its connected from the editor as well, fix.
         dropdown.onValueChanged.AddListener(delegate {
             DropdownValueChanged(dropdown);
+            DropDownMenu.GetComponent<Dropdown>().value = -1;
         });
     }
 
     // Drop Ddown menu listner function
-    void DropdownValueChanged(Dropdown change)
+    public void DropdownValueChanged(Dropdown change)
     {
-        int selected;
-        // There is a blank row with a " " in the drop down because OnChangeSelected needs at least two options in drop down to work.
-
-        selected = change.value + 1;
-        
-        //if (change.value == 0)
-        //{
-        //    Debug.Log("change.value == 0");
-        //    selected = change.value + 1;
-        //    return;
-        //}
-        //else
-        //{
-        //    selected = change.value;
-        //}
-        // Use trim to trim away charcters from string like digits. 
-        //Debug.Log("The Level scene name before trim: " + SceneManager.GetActiveScene().name);
-        char[] charsToTrim = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-        string sceneNameWithNoDigits = SceneManager.GetActiveScene().name.TrimEnd(charsToTrim);
-
-        string selectedLevel = sceneNameWithNoDigits + selected.ToString();
+        // Todo: Check that we populated the drop down optinons correct.
+        string recordTimeText = GetComponent<Timer>().ElapsedTimeFloatToString(GetComponent<StoreManager>().GetTimeRecordOfLevel(change.options.ToArray()[0].text));
 
         RecordTimeText.SetActive(true);
-        string recordTimeText = GetComponent<Timer>().ElapsedTimeFloatToString(GetComponent<StoreManager>().GetTimeRecordOfLevel(selectedLevel));
         RecordTimeText.GetComponent<Text>().text = recordTimeText;
     }
 
@@ -74,18 +59,25 @@ public class MenuManager : MonoBehaviour
         Dropdown dropdown = DropDownMenu.GetComponent<Dropdown>();
         List<string> dropOptions = new List<string>();
 
+        //Todo: Clean upp code bellow.
         dropdown.ClearOptions(); // Todo: This function doesn't clear the options.
         if (DropDownMenu.activeSelf == false) DropDownMenu.SetActive(true);
         dropdown.ClearOptions(); // Todo: This function doesn't clear the options.
         dropOptions.Clear();
+
+        //if (GetComponent<StoreManager>().dictLevelTimeRecords.Count == 1)
+        //{
+        //    dropOptions.Add(" ");
+        //}
 
         foreach (KeyValuePair<string, float> dictLevelTimeRecord in GetComponent<StoreManager>().dictLevelTimeRecords)
         {
             dropOptions.Add(dictLevelTimeRecord.Key);
         }
         dropdown.AddOptions(dropOptions);
-        dropdown.SetValueWithoutNotify(100); // Todo: Try with out 
+       // dropdown.SetValueWithoutNotify(100); // Todo: Try with out 
         dropdown.RefreshShownValue();
+        DropDownMenu.GetComponent<Dropdown>().value = -1; // Todo: remove if not needed.
     }
 
     public void RemoveAllDropDownListners()
@@ -119,9 +111,9 @@ public class MenuManager : MonoBehaviour
         }
         else
         {
-            RecordTimeText.SetActive(true);
-            DropDownMenu.SetActive(true);
-            NextLevelButton.SetActive(true);
+           // RecordTimeText.SetActive(true);
+           // DropDownMenu.SetActive(true);
+           // NextLevelButton.SetActive(true);
         }
     }
 

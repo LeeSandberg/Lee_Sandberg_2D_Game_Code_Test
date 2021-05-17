@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class StoreManager : MonoBehaviour
 {
     const string FileNameForResults = "RecordResults";   // Level, time records stored.
+   // const string dummyLevelName = "SokoLevel0";
 
     public static StoreManager instance;
 
@@ -21,9 +22,12 @@ public class StoreManager : MonoBehaviour
     }
 
     private void Start()
-    { 
+    {
         // Load record times for levels.
         // LoadFromFile();  // Todo: Add this WHEN filee storing works or debugging will be tuff with corrupt data loaded..
+
+        // Add a blank level and record. To avoid problems. Todo: Remove this.
+        //dictLevelTimeRecords.Add(dummyLevelName, 0f);
     }
     
     public float GetTimeRecordOfLevel(string levelName) 
