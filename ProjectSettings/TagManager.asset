@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - StaticObstruction
+  - Boxes
+  - Players
+  - GoalTargets
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Static Obsticals and Open Areas
+    uniqueID: 1306318737
+    locked: 0
+  - name: Spawn Points and Goal Targets
+    uniqueID: 3217999327
+    locked: 0
+  - name: Boxes and Character
+    uniqueID: 4256879111
+    locked: 0
+  - name: ' Top Layer'
+    uniqueID: 3583305327
+    locked: 0
