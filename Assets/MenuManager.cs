@@ -35,7 +35,7 @@ public class MenuManager : MonoBehaviour
     public void DropdownValueChanged(Dropdown change)
     {
         // Todo: Check that we populated the drop down optinons correct.
-        string recordTimeText = GetComponent<Timer>().ElapsedTimeFloatToString(GetComponent<StoreManager>().GetTimeRecordOfLevel(change.options.ToArray()[0].text));
+        string recordTimeText = GetComponent<Timer>().ElapsedTimeFloatToString(GetComponent<StoreManager>().GetTimeRecordOfLevel(change.options.ToArray()[1].text));
 
         RecordTimeText.SetActive(true);
         RecordTimeText.GetComponent<Text>().text = recordTimeText;
