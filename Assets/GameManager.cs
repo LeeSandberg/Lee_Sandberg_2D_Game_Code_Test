@@ -122,9 +122,7 @@ public class GameManager : MonoBehaviour
         // Wait until the level finish loading
         while (!asyncLoadLevel.isDone)
             yield return null;
-       // FindCharacterAfterLoad();
-     //   FindManagers();
-        // Todo: Get Character member set up.
+       
         //if (Character) Character.GetComponent<PlayerController>().ClearDictionaryOnReloadLevel();   // Remove if not needed.
         currentSceneIndex = sceneIndex;
 
@@ -145,8 +143,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(gameState);
-
         switch (gameState)
         {
             case StateType.GAMELOADING:
@@ -169,27 +165,19 @@ public class GameManager : MonoBehaviour
 
             case StateType.PLAYERBEGINPLAY:
 
+                // No State change here.  Its done in Update when player moves character.
                 break;
 
             case StateType.GAMESTARTED:
-                // Load first scene.
-               // LoadScene(1);
 
-                //if (Character) gameState = StateType.STARTLEVEL;
-                //else
-                //{
-                //    Debug.Log("GameManager couldn't attach to Character in update GAMEJUSTSTARTED");
-                //   // gameState = StateType.DEFAULT;
-                //}               
+                // No State change here.  Its done in 
                 break;
 
             case StateType.STARTLEVEL:
 
                 GetComponent<MenuManager>().HideButtonsAndMenus(true);
 
-                // Check if user started to move character.
                 if (Character)
-                  //  if (Character.GetComponent<PlayerController>().HasPlayerStartedPlayingLevel())
                     {
                         playerController.EnablePlayerTostartToPlay();
                         GetComponent<MenuManager>().HideButtonsAndMenus(true);                     
@@ -213,7 +201,6 @@ public class GameManager : MonoBehaviour
 
             case StateType.RESETLEVEL:
                     gameState = StateType.GAMELOADING;
-                    playerController.ClearSpriteToGameObjectDict();
                     LoadScene(currentSceneIndex);
                     
                 break;

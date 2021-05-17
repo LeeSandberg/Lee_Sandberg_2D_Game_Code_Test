@@ -85,8 +85,6 @@ public class TileMapManager : MonoBehaviour
         boxesOnTargets--;
     }
 
-
-
     // Todo: Remove set bellow.
     public void SetNumberOfTargets(int nrOfTargets)
     {
@@ -97,11 +95,6 @@ public class TileMapManager : MonoBehaviour
     {
         boxesOnTargets = nrOfBoxesOnTargets;
     }
-
-    //public void ClearDictionaryOnReloadLevel()
-    //{
-    //    dictSpriteToGameObject.Clear();
-    //}
 
     //public void ClearBoxesOnTargets()
     //{

@@ -31,16 +31,19 @@ public class MenuManager : MonoBehaviour
     {
         int selected;
         // There is a blank row with a " " in the drop down because OnChangeSelected needs at least two options in drop down to work.
-        if (change.value == 0)
-        {
-            Debug.Log("change.value == 0");
-            selected = change.value + 1;
-            return;
-        }
-        else
-        {
-            selected = change.value;
-        }
+
+        selected = change.value + 1;
+        
+        //if (change.value == 0)
+        //{
+        //    Debug.Log("change.value == 0");
+        //    selected = change.value + 1;
+        //    return;
+        //}
+        //else
+        //{
+        //    selected = change.value;
+        //}
         // Use trim to trim away charcters from string like digits. 
         //Debug.Log("The Level scene name before trim: " + SceneManager.GetActiveScene().name);
         char[] charsToTrim = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
@@ -78,10 +81,7 @@ public class MenuManager : MonoBehaviour
 
         foreach (KeyValuePair<string, float> dictLevelTimeRecord in GetComponent<StoreManager>().dictLevelTimeRecords)
         {
-            // onValueChanged dont't work with just one level in drop down menu. No options to onValueChanged. So we add " "
-            dropOptions.Add(" ");
             dropOptions.Add(dictLevelTimeRecord.Key);
-            // Todo: delete this line for test only
         }
         dropdown.AddOptions(dropOptions);
         dropdown.SetValueWithoutNotify(100); // Todo: Try with out 

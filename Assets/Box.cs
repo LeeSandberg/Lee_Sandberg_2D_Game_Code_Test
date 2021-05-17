@@ -15,7 +15,6 @@ public class Box : MonoBehaviour
 
     // Keep track of the box GameObjects with Sprite Renders in the tile map.
     public static Dictionary<int, GameObject> dictSpriteToGameObject = new Dictionary<int, GameObject>();
-
     public static Box instance; // Todo: Keep and use or remove
     
     private bool onTarget = false;
@@ -61,12 +60,19 @@ public class Box : MonoBehaviour
     // Called before Start()
     void Awake()
     {
-
-        instance = this; // Todo: Keep and use or remove    
+        if (!instance) instance = this; // Todo: Keep and use or remove    
         if (!tileMapManager /* || !levelManager*/) FindManagers();
 
-        //if (tileMapManager) 
-            AddBoxGameObjectAndSprite(transform);
+        AddBoxGameObjectAndSprite(transform);
+    }
+
+    void OnDestroy() 
+    { 
+        if (this == instance) 
+        {
+            dictSpriteToGameObject.Clear(); // Todo: Remove if not needed.
+            instance = null; 
+        } 
     }
 
     public void AddBoxGameObjectAndSprite(Transform transform)

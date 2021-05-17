@@ -731,7 +731,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Option A
+  m_Text: 
 --- !u!222 &357827896
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1413,13 +1413,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: Option A
-      m_Image: {fileID: 0}
-    - m_Text: Option B
-      m_Image: {fileID: 0}
-    - m_Text: Option C
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -1876,9 +1870,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b78e3d5c30767d4182a7f8d33df1f22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoxesAndCharacter: {fileID: 0}
-  GoalTargets: {fileID: 0}
-  StaticObsticals: {fileID: 0}
   TargetSprite: {fileID: 21300000, guid: 57905715037012543a2d85111d52d195, type: 3}
 --- !u!1 &1558181484
 GameObject:
