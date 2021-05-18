@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     public Transform    TargetPoint;      // Motition helper
     public GameObject   Box;              // Handel for Boxes
 
-    private const float speed = 5f;     // Motition speed
+    private const float speed = 5f;       // Motition speed
     private bool hasStartedPlaying = false;
 
     private GameObject gameManagerGameObject;
@@ -53,20 +53,13 @@ public class PlayerController : MonoBehaviour
         FindManagers();
 
         // Detach TargetPoint as child object from players Character.
-        TargetPoint.parent = null;
-
-        
+        TargetPoint.parent = null;      
     }
     public void ClearSpriteToGameObjectDict()
     {
         if (!Box) Box.GetComponent<Box>().ClearSpriteToGameObjectDict();
         else Debug.Log("Box needs to be assigned in editor to Player Controller.");
     }
-
-    //public bool HasPlayerStartedPlayingLevel()
-    //{
-    //    return hasStartedPlaying;
-    //}
 
     public void EnablePlayerTostartToPlay()
     {
@@ -117,7 +110,7 @@ public class PlayerController : MonoBehaviour
             return false;
         }
     }
-bool IsBoxOnTarget(GameObject pushedBox) // Todo: Check how it works.
+bool IsBoxOnTarget(GameObject pushedBox)
     {
         Vector3Int cellPosition = levelManager.GoalTargets.WorldToCell(pushedBox.transform.position);
         Sprite sprite = levelManager.GoalTargets.GetSprite(cellPosition);
@@ -142,9 +135,8 @@ bool IsBoxOnTarget(GameObject pushedBox) // Todo: Check how it works.
 
     void Move(Vector3 direction)
     {
-        // Todo: Test to remove assigning these two.
         float checkDistance = 1f;
-        Vector3 usedVector; ;
+        Vector3 usedVector; 
 
         Sprite justInFront;
         Sprite isBoxInFrontOfPushedBox;
@@ -205,7 +197,7 @@ bool IsBoxOnTarget(GameObject pushedBox) // Todo: Check how it works.
         }
         else // Maybe the player is pushing a box, if so double the distance.
         {
-            // If player is pushing the box from a box target, decrease the target count...
+            // If player is pushing the box from a box target, decrease the target count.
             GameObject pushedBox = gameObject.transform.GetChild(0).gameObject;
             if (pushedBox) RemoveBoxFromTarget(pushedBox); // It may or may not be pushing. Be a child of player. 
 
@@ -243,10 +235,10 @@ bool IsBoxOnTarget(GameObject pushedBox) // Todo: Check how it works.
 
     void Update()
     {
-        // Game not intialized yet.
+        // Game not initialized yet.
         if (!gameManager) return;
 
-        // Horisontal user input move - figure out the direction on the x axis.
+        // Horizontal user input move - figure out the direction on the x axis.
         float horizontalUserInput = Mathf.Abs(Input.GetAxisRaw("Horizontal"));
         float verticalUserInput = Mathf.Abs(Input.GetAxisRaw("Vertical"));
 
@@ -261,7 +253,7 @@ bool IsBoxOnTarget(GameObject pushedBox) // Todo: Check how it works.
         }
 
         // Game Manager not ready yet or level halted.
-        if (!gameManager.HasLevelStarted()) return; // Todo: || getLevelNo()) return; // Check if its level one.
+        if (!gameManager.HasLevelStarted()) return; // Todo: || getLevelNo()) return; // Check if it´s level one.
 
         // Choosen not to use a coroutine for moving. Timer.cs uses a coroutine.
         // Move character every frame if needed.
@@ -294,10 +286,7 @@ bool IsBoxOnTarget(GameObject pushedBox) // Todo: Check how it works.
                     }
                 }
             }
-            // Horisontal user input move - figure out the direction on the x axis.
-            //float horizontalUserInput = Mathf.Abs(Input.GetAxisRaw("Horizontal"));
-            //float verticalUserInput = Mathf.Abs(Input.GetAxisRaw("Vertical"));
-
+            // Horisontal user input move - figure out the direction on the x and y axis.
             if (horizontalUserInput == 1f) Move(new Vector3(1f, 0f, 0f));
             else if (verticalUserInput == 1f) Move(new Vector3(0f, 1f, 0f));
         }

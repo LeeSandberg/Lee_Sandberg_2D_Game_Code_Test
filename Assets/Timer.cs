@@ -33,11 +33,16 @@ public class Timer : MonoBehaviour
         instance = this;
     }
 
-    // Start is called before the first frame update
+    // Start is called before the first frame update.
     void Start()
     {
         timerText.text = "Go !";
         timerGoing = false;
+    }
+
+    public void Init()
+    {
+        Start();
     }
 
     public void BeginTimer()
@@ -68,7 +73,7 @@ public class Timer : MonoBehaviour
             elapsedTime += Time.deltaTime;
             timePlayStr = ElapsedTimeFloatToString(elapsedTime);
             timerText.text = timePlayStr;
-            yield return null; // Get back to rendering the rest of the frame
+            yield return null; // Get back to rendering the rest of the frame.
         }
     }
 }

@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class StoreManager : MonoBehaviour
 {
     const string FileNameForResults = "RecordResults";   // Level, time records stored.
-   // const string dummyLevelName = "SokoLevel0";
+    string dummyLevelName = "SokoLevel0";
 
     public static StoreManager instance;
 
@@ -24,12 +24,14 @@ public class StoreManager : MonoBehaviour
     private void Start()
     {
         // Load record times for levels.
-        // LoadFromFile();  // Todo: Add this WHEN filee storing works or debugging will be tuff with corrupt data loaded..
-
-        // Add a blank level and record. To avoid problems. Todo: Remove this.
-        //dictLevelTimeRecords.Add(dummyLevelName, 0f);
+        LoadFromFile();  
     }
-    
+
+    public string GetDummyLevelName()
+    {
+        return dummyLevelName;
+    }
+
     public float GetTimeRecordOfLevel(string levelName) 
     {
         return dictLevelTimeRecords[levelName];
@@ -41,7 +43,7 @@ public class StoreManager : MonoBehaviour
      
         float time = GetComponent<Timer>().GetElapsedTimeAsFloat();
 
-        // Ckeck to see if thsi level is in the list. if not add it and the new elapsed time.
+        // Ckeck to see if this level is in the list. If not add it and the new elapsed time.
         if (dictLevelTimeRecords.ContainsKey(sceneName))
         {
             // If the new record time is faster replace the old time.
@@ -50,22 +52,34 @@ public class StoreManager : MonoBehaviour
                 dictLevelTimeRecords[sceneName] = time;
             }
         }
-        else // Ok this level is new, so add it and its record time.
+        else // Ok, this level is new, so add it and its record time.
         {
+
             dictLevelTimeRecords.Add(sceneName, time);
+
         }
     }
 
     [System.Serializable]
-    public class ToolBar
+    public class LevelInfo
     {
+        public int numberTimesPlayed;
         public string level;
+        public int levelBuildIndex;
         public float time;
+    }
+
+    [System.Serializable]
+    public class LevelsInfoHolder
+    {
+        public List<LevelInfo> LevelsInfo;
     }
 
     public bool LoadFromFile()
     {
-        ToolBar toolBar;
+        LevelsInfoHolder classHolder = new LevelsInfoHolder();
+        classHolder.LevelsInfo = new List<LevelInfo>();
+
         // Todo: Remove toolBar = new ToolBar();
         string jsontoolBar;
         string fileName = FileNameForResults + ".txt";
@@ -82,8 +96,12 @@ public class StoreManager : MonoBehaviour
 
                 if (jsontoolBar.Length > 2)
                 {
-                    toolBar = JsonUtility.FromJson<ToolBar>(jsontoolBar);
-                    dictLevelTimeRecords.Add(toolBar.level, toolBar.time);
+                    classHolder = JsonUtility.FromJson<LevelsInfoHolder>(jsontoolBar);
+
+                    for (int i = 0; i < classHolder.LevelsInfo.Count; i++)
+                    {
+                        dictLevelTimeRecords.Add(classHolder.LevelsInfo[i].level, classHolder.LevelsInfo[i].time);
+                    }
                 }
             }
             return true;
@@ -97,32 +115,42 @@ public class StoreManager : MonoBehaviour
 
     public void SaveToFile()
     {
-        ToolBar toolBar;
-        toolBar = new ToolBar();
-
-        string jsontoolBar;
+        LevelInfo toolBar;
+        List<LevelInfo> toolList = new List<LevelInfo>(); 
+        string jsontoolBar;   
 
         string file = FileNameForResults + ".txt";
         string path = Application.persistentDataPath + "/" + file;
 
+        LevelInfo[] dataArray = new LevelInfo[SceneManager.GetActiveScene().buildIndex];
         FileStream fileStream = new FileStream(path, FileMode.OpenOrCreate);
+
+        int i = 0;
 
         foreach (KeyValuePair<string, float> dictLevelTimeRecord in dictLevelTimeRecords)
         {
+            toolBar = new LevelInfo();
             string name = dictLevelTimeRecord.Key;
             float time = dictLevelTimeRecord.Value;
 
             toolBar.level = name;
             toolBar.time = time;
 
-            jsontoolBar = JsonUtility.ToJson(toolBar, true);
+            dataArray[i] = toolBar;
+            toolList.Add(toolBar);
+
+            i++;
+        }
+
+        using (StreamWriter writer = new StreamWriter(fileStream))
+        {
+            var variable = new LevelsInfoHolder() { LevelsInfo = toolList };
+            jsontoolBar = JsonUtility.ToJson(variable);
+
             Debug.Log("json string: " + jsontoolBar);
 
-            // Store value pair to file
-            using (StreamWriter writer = new StreamWriter(fileStream))
-            {
-                writer.Write(jsontoolBar); // Todo: Tried WriteLine before.
-            }
+            // Store value pair to file.
+            writer.Write(jsontoolBar); 
         }
         // Todo: remove fileStream.Flush(); 
         fileStream.Close();

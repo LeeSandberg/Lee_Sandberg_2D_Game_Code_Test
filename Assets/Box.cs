@@ -7,33 +7,27 @@ using UnityEngine.Tilemaps;
 
 public class Box : MonoBehaviour
 {
-    // Assign these in editor for Box
-    // public PlayerController playerController;
-
     // Assign this in editor
     public Tilemap BoxesAndCharacter;
 
     // Keep track of the box GameObjects with Sprite Renders in the tile map.
     public static Dictionary<int, GameObject> dictSpriteToGameObject = new Dictionary<int, GameObject>();
-    public static Box instance; // Todo: Keep and use or remove
+    public static Box instance; // Todo: Keep and use or remove.
     
     private bool onTarget = false;
     private const string managerObject = "ManagerObject";
 
     [SerializeField]
-   // private static GameManager gameManager;    // Todo: Remove manager, not needed.
     private static TileMapManager tileMapManager;
-    //private static LevelManager levelManager; 
+   
     private bool FindManagers()
     {
         GameObject gameObject = GameObject.Find(managerObject);
         if (gameObject)
-        {
-            // gameManager = gameObject.GetComponent<GameManager>();
-            tileMapManager = gameObject.GetComponent<TileMapManager>();
-           // levelManager = gameObject.GetComponent<LevelManager>();
+        {          
+            tileMapManager = gameObject.GetComponent<TileMapManager>();         
 
-            if (/*gameManager &&*/ tileMapManager) return true;
+            if (tileMapManager) return true;
             else return false;
         }
         else
@@ -60,8 +54,8 @@ public class Box : MonoBehaviour
     // Called before Start()
     void Awake()
     {
-        if (!instance) instance = this; // Todo: Keep and use or remove    
-        if (!tileMapManager /* || !levelManager*/) FindManagers();
+        if (!instance) instance = this; // Todo: Keep and use or remove.    
+        if (!tileMapManager) FindManagers();
 
         AddBoxGameObjectAndSprite(transform);
     }
@@ -77,8 +71,6 @@ public class Box : MonoBehaviour
 
     public void AddBoxGameObjectAndSprite(Transform transform)
     {
-        //if (!levelManager)
-        //{
             Sprite gameObjectsSprite = BoxesAndCharacter.GetSprite(BoxesAndCharacter.WorldToCell(transform.position));
 
             if (gameObjectsSprite)
@@ -91,7 +83,6 @@ public class Box : MonoBehaviour
             {
                 Debug.Log("Box GameObject is missing a SpriteRenderer or sprite");
             }
-        //}
     }
 
     // Unity Tilemap API missing feature.

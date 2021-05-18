@@ -21,20 +21,18 @@ public enum StateType
     GAMEOVER,       // Put up "Game Over" sign. -> Explore level times)
     LEVELCHANGED,   // LEVELCHANGED -> STARTLEVEL -> PLAYING
     MENU,           // Todo: decide if we gone have a menu scene or menu manager script.
-    DEFAULT         // Is state should never happen
+    DEFAULT         // This state should never happen.
 };
 
 public class GameManager : MonoBehaviour
 {
-    // Game start using pre-level or start-level, called _preload with this
+    // Game start using pre-level or start-level, called _preload with this.
     // GameManger script on a non destructable object on it.
-    // So the object and its GameManger script component stays intact inbetwin levels.
+    // So the object and its GameManger script component stays intact inbetween levels.
 
     private const int secondsToWaitForLevelLoad = 3; // Wait seconds for Load scene.
     private StateType gameState = StateType.PLAYINGLEVEL;
     private const string characterName = "character";
-    private GameObject Character;          // Handle for CharacterController.cs thats on this game object.
-    
 
     // Keep the the current scene index (BuildIndex)
     private int currentSceneIndex = 0;
@@ -58,10 +56,15 @@ public class GameManager : MonoBehaviour
         else return false;
     }
 
-    public StateType GetGameState()
+    public int GetCurrentScene()
     {
-        return gameState;
+        return currentSceneIndex;
     }
+
+    //public StateType GetGameState()
+    //{
+    //    return gameState;
+    //}
 
     public void StartPlaying()
     {
@@ -98,35 +101,30 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Congratulations You have finished this level !");
         GetComponent<MenuManager>().ButtonMenu.SetActive(true);
-        GetComponent<MenuManager>().NextLevelButton.SetActive(true);
         GetComponent<Timer>().EndTimer();
         GetComponent<StoreManager>().StoreResultInDictionary();
+
+        if (!IsLastLevel()) GetComponent<MenuManager>().NextLevelButton.SetActive(true);
 
         gameState = StateType.LEVELDONE;
     }
 
-    // Start is called before the first frame update
+    // Start is called before the first frame update.
     void Start()
     {
         LoadScene(1);
     }
 
-    void Init() // Todo: Use or remove.
-    {
-
-    }
-
     private IEnumerator LoadSceneCoroutine(int sceneIndex)
     {
-        // Start loading the scene
+        // Start loading the scene.
         AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Single);
-        // Wait until the level finish loading
+        // Wait until the level finish loading.
         while (!asyncLoadLevel.isDone)
             yield return null;
        
-        //if (Character) Character.GetComponent<PlayerController>().ClearDictionaryOnReloadLevel();   // Remove if not needed.
         currentSceneIndex = sceneIndex;
-
+        GetComponent<Timer>().Init(); 
         GetComponent<MenuManager>().HideButtonsAndMenus(true);
 
         gameState = StateType.GAMELOADED;
@@ -135,13 +133,20 @@ public class GameManager : MonoBehaviour
     private void LoadScene(int sceneIndex)
     {
         gameState = StateType.GAMELOADING;
-        // Start loading the scene
+        // Start loading the scene.
         StartCoroutine("LoadSceneCoroutine", sceneIndex);
-
-        // currentSceneIndex = sceneIndex;
     }
 
-    // Update is called once per frame
+    public void QuitGame()
+    {
+        GetComponent<Timer>().EndTimer();
+        GetComponent<StoreManager>().SaveToFile();
+        GetComponent<MenuManager>().QuitMenu();
+        GetComponent<MenuManager>().HideGameOverText(false);
+        gameState = StateType.GAMEOVER;
+    }
+
+    // Update is called once per frame.
     void Update()
     {
         switch (gameState)
@@ -150,35 +155,34 @@ public class GameManager : MonoBehaviour
                 break;
 
             case StateType.GAMELOADED:
-                // Attach to player controller and levels manager.             
+                // Attach to player controller and the levels manager.             
                 FindManagers();
 
-                // Initate player controller and level manager.
-                playerController.Init(this.gameObject); // Todo: Sort what to do in Awake/Start and not and what to do in Init.
-                levelManager.Init(this.gameObject);
+                // Initate player controller and the levels manager.
+                playerController.Init(this.gameObject); 
 
                 // Initate tile map manager, this game manager.
                 tileMapManager.Init(playerController, levelManager);
-                this.Init();
+                //this.Init();
 
                 gameState = StateType.PLAYERBEGINPLAY;
                 break;
 
             case StateType.PLAYERBEGINPLAY:
 
-                // No State change here.  Its done in Update when player moves character.
+                // No State change here. State changes in Update when player moves character.
                 break;
 
             case StateType.GAMESTARTED:
 
-                // No State change here.  Its done in 
+                // No State change here. 
                 break;
 
             case StateType.STARTLEVEL:
 
                 GetComponent<MenuManager>().HideButtonsAndMenus(true);
 
-                if (Character)
+                if (playerController)
                     {
                         playerController.EnablePlayerTostartToPlay();
                         GetComponent<MenuManager>().HideButtonsAndMenus(true);                     
@@ -187,16 +191,16 @@ public class GameManager : MonoBehaviour
                 break;
 
             case StateType.GAMEOVER:
-
+                Application.Quit();
                 break;
 
             case StateType.PLAYINGLEVEL:
 
-                    // No State change here. Its done in AllBoxesArePlaced()
+                    // No State change here. It´s done in AllBoxesArePlaced()
                 break;
 
             case StateType.LEVELDONE:
-                //int a = 10;
+
                 // No State change here. 
                 break;
 
@@ -210,15 +214,13 @@ public class GameManager : MonoBehaviour
                 if (IsLastLevel())
                 {
                     Debug.Log("GameManager Switch NEXTLEVEL trying to load more than max number of levels");
-                    GetComponent<MenuManager>().HideGameOverText(false);
-                    gameState = StateType.GAMEOVER;
+                    QuitGame();
                 }
                 else
                 {
                     gameState = StateType.GAMELOADING;
                     playerController.ClearSpriteToGameObjectDict();
-                    currentSceneIndex++;
-                    LoadScene(currentSceneIndex);
+                    LoadScene(currentSceneIndex + 1);
                 }
                 break;
 

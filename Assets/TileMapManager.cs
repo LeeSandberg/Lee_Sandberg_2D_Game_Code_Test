@@ -11,23 +11,25 @@
 // However the Tilemap API doesn't let us know what GameObject is in which tile.
 // It just returns sprites in Tiles, but not the GameObject Sprite Render sprite in a tile.
 //
-// We are not allowed to use ray casting in this code test, which would solve this by projecting...
+// We are not allowed to use ray casting in this code test, which would solve this by projecting.
 //
 // The wokraround: Another sprite is places in the tile, under the GameObject Sprite render tile.
 //
 // Use getComponent<SpriteRender>().Sprite.getInstanceId(), sadly each tile in the tilemap doesn't have a uniqe id, 
-// not even if from different tile pallet slots, so we need ten different simular sprites in assets folder,
+// not even if from different tile pallet slots, so we need ten different similar sprites in assets folder,
 // to get ten different IDs on the sprites.
 // 
 // A dictionary is used to pair these Sprite ID's with Tile map Gameobjects.
 // Using a dictionary in Box.cs to map box sprites in Tilemap to GameObjects (we could try using spriteid -> GameObject)
 // 
-// !! Ups Make sure you don't use the same sprite behind a box twice in a level, or this will start behaving weird !!
+// !! Oops Make sure you don't use the same sprite behind a box twice in a level, or this will start behaving weird !!
 // In the Tile palette they have them in a row, in the layer "boxes and charcter".
 //
 // Future work could use rule tiles in Tilemap extra. https://www.youtube.com/watch?v=Ky0sV9pua-E
 //
 // And dynamic 2D lights with normal maps on sprites. https://www.youtube.com/watch?v=48dsapjS55k
+//
+// Use of TileBase when create your own tile classes.
 //
 using System.Collections;
 using System.Collections.Generic;
@@ -52,10 +54,8 @@ public class TileMapManager : MonoBehaviour
     {
         playerController = playContr;
         levelManager = levManag;
-
-        // dictSpriteToGameObject.Clear(); // Todo: remove if not needed.
-        boxesOnTargets = 0;             // Todo: remove if not needed.
-        numberOfTargets = 0;            // Todo: remove if not needed.
+        boxesOnTargets = 0;             
+        numberOfTargets = 0;            
 
         if (!TargetSprite) Debug.Log("Assign the Target sprite in _preload scene.");
         else
@@ -80,43 +80,34 @@ public class TileMapManager : MonoBehaviour
         boxesOnTargets++;
     }
 
-    public void DecreaseBoxesOnTargets() // Todo: check that this one is used correctly.
+    public void DecreaseBoxesOnTargets() // Todo: Check that this one is used correctly.
     {
         boxesOnTargets--;
     }
 
-    // Todo: Remove set bellow.
+    // Todo: Remove set below.
     public void SetNumberOfTargets(int nrOfTargets)
     {
         numberOfTargets = nrOfTargets;
     }
 
-    public void SetNumberOfBoxesOnTargets(int nrOfBoxesOnTargets)
-    {
-        boxesOnTargets = nrOfBoxesOnTargets;
-    }
 
-    //public void ClearBoxesOnTargets()
+    //public bool IsBoxOnTarget(string spriteName)
     //{
-    //    boxesOnTargets = 0;
+    //    if (levelManager.GoalTargets == null) return false;
+
+    //    Vector3Int tileCellPosition = levelManager.GoalTargets.WorldToCell(transform.position);
+
+    //    Sprite spriteResult = levelManager.GoalTargets.GetSprite(tileCellPosition);
+
+    //    if (spriteResult == null) return false; // No sprite in this tile.
+
+    //    string nameResult = spriteResult.name;
+
+    //    bool result = nameResult.Equals(spriteName);
+
+    //    return result; // Yes, found sprite.
     //}
-
-    public bool IsBoxOnTarget(string spriteName)
-    {
-        if (levelManager.GoalTargets == null) return false;
-
-        Vector3Int tileCellPosition = levelManager.GoalTargets.WorldToCell(transform.position);
-
-        Sprite spriteResult = levelManager.GoalTargets.GetSprite(tileCellPosition);
-
-        if (spriteResult == null) return false; // No sprite in this tile.
-
-        string nameResult = spriteResult.name;
-
-        bool result = nameResult.Equals(spriteName);
-
-        return result; // Yes found sprite.
-    }
 
     public void MoveTriggerSprite(Vector3Int vector, Vector3 usedVector, Vector3 position)
     {
@@ -164,8 +155,6 @@ public class TileMapManager : MonoBehaviour
         }
         return amount;
     }
-
-
 }
 
 

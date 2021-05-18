@@ -9,9 +9,9 @@ using UnityEngine.SceneManagement;
 public class MenuManager : MonoBehaviour
 {
     // Todo: Hook up in editor.
-    public GameObject NextLevelButton;  // Todo: use type Button
-    public GameObject DropDownMenu;     // Todo: use Dropdown
-    public GameObject RecordTimeText;   // Todo: use Text
+    public GameObject NextLevelButton;  // Todo: use type Button.
+    public GameObject DropDownMenu;     // Todo: use Dropdown.
+    public GameObject RecordTimeText;   // Todo: use Text.
     public GameObject TimeText;
     public GameObject ButtonMenu;
     public GameObject ResetButton;
@@ -19,65 +19,77 @@ public class MenuManager : MonoBehaviour
 
     private void Awake()
     {
-        // Todo: add RemoveListner when it quits or loads level.
-        // Todo: trying the trick with -1 in value in the inspector on Dropdown when having just one option.
-        DropDownMenu.SetActive(false);
         DropDownMenu.GetComponent<Dropdown>().value = -1;
+        // Todo: add RemoveListner when it quits or loads level.
+        DropDownMenu.SetActive(false);
         Dropdown dropdown = DropDownMenu.GetComponent<Dropdown>();
-        // Todo: Its connected from the editor as well, fix.
+        // Todo: It´s connected from the editor as well, fix.
         dropdown.onValueChanged.AddListener(delegate {
-            DropdownValueChanged(dropdown);
-            DropDownMenu.GetComponent<Dropdown>().value = -1;
+            DropdownValueChanged(dropdown);        
         });
     }
 
-    // Drop Ddown menu listner function
+    // Drop down menu listner function.
     public void DropdownValueChanged(Dropdown change)
-    {
-        // Todo: Check that we populated the drop down optinons correct.
-        string recordTimeText = GetComponent<Timer>().ElapsedTimeFloatToString(GetComponent<StoreManager>().GetTimeRecordOfLevel(change.options.ToArray()[1].text));
+    {   
+        // Unity doesn't support ONE option in Dropdown menu, so just present the time.
+        if (GetComponent<GameManager>().GetCurrentScene() == 1 && change.options.Count < 1) return;
 
+        string levelName = change.options[change.value].text;
+        float levelTime = GetComponent<StoreManager>().GetTimeRecordOfLevel(levelName);
+        string recordTimeText = GetComponent<Timer>().ElapsedTimeFloatToString(levelTime);
         RecordTimeText.SetActive(true);
         RecordTimeText.GetComponent<Text>().text = recordTimeText;
     }
 
-    // Next Level button
+    // Next Level button. DON'T remove.
     public void NextLevel()
     {
         GetComponent<GameManager>().NextLevel();     
     }
 
-    // Next Level button
+    // Next Level button. DON'T remove.
     public void ResetLevel()
     {
         GetComponent<GameManager>().ResetLevel();
     }
 
-    // Menu button
+    // Quit button. DON'T remove.
+    public void QuitGame()
+    {
+        GetComponent<GameManager>().QuitGame();
+    }
+
+    // Menu button. DON'T remove.
     public void DisplayDropDownMenu()
     {
+        // Unity doesn't support ONE option in Dropdown menu, so just present the time.
+        if (GetComponent<GameManager>().GetCurrentScene() == 1 && !GetComponent<GameManager>().HasLevelStarted()) 
+        {
+            string recordTimeText;
+            float levelTime = GetComponent<StoreManager>().GetTimeRecordOfLevel("SokoLevel1");
+
+            recordTimeText = GetComponent<Timer>().ElapsedTimeFloatToString(levelTime);
+            RecordTimeText.SetActive(true);
+            RecordTimeText.GetComponent<Text>().text = recordTimeText;
+
+            return;
+        }
+
         Dropdown dropdown = DropDownMenu.GetComponent<Dropdown>();
         List<string> dropOptions = new List<string>();
 
-        //Todo: Clean upp code bellow.
-        dropdown.ClearOptions(); // Todo: This function doesn't clear the options.
         if (DropDownMenu.activeSelf == false) DropDownMenu.SetActive(true);
-        dropdown.ClearOptions(); // Todo: This function doesn't clear the options.
+        dropdown.ClearOptions();
         dropOptions.Clear();
-
-        //if (GetComponent<StoreManager>().dictLevelTimeRecords.Count == 1)
-        //{
-        //    dropOptions.Add(" ");
-        //}
 
         foreach (KeyValuePair<string, float> dictLevelTimeRecord in GetComponent<StoreManager>().dictLevelTimeRecords)
         {
-            dropOptions.Add(dictLevelTimeRecord.Key);
+           dropOptions.Add(dictLevelTimeRecord.Key);
         }
         dropdown.AddOptions(dropOptions);
-       // dropdown.SetValueWithoutNotify(100); // Todo: Try with out 
         dropdown.RefreshShownValue();
-        DropDownMenu.GetComponent<Dropdown>().value = -1; // Todo: remove if not needed.
+        DropDownMenu.GetComponent<Dropdown>().value = -1; // Todo: remove if not needed.   
     }
 
     public void RemoveAllDropDownListners()
@@ -109,12 +121,6 @@ public class MenuManager : MonoBehaviour
             NextLevelButton.SetActive(false);
             GameOverText.SetActive(false);
         }
-        else
-        {
-           // RecordTimeText.SetActive(true);
-           // DropDownMenu.SetActive(true);
-           // NextLevelButton.SetActive(true);
-        }
     }
 
     public void HideGameOverText(bool hide)
@@ -129,7 +135,7 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    public void QuitGame()
+    public void QuitMenu()
     {
         #if UNITY_EDITOR
             DropDownMenu.GetComponent<Dropdown>().onValueChanged.RemoveAllListeners();
