@@ -38,8 +38,6 @@ using UnityEngine.Tilemaps;
 
 public class TileMapManager : MonoBehaviour
 {
-    private const string characterName = "character";
-
     // Specify the target sprite.
     public Sprite TargetSprite;
 
@@ -64,7 +62,6 @@ public class TileMapManager : MonoBehaviour
             SetNumberOfTargets(amount);
         }
     }
-
     public int GetNumberOfTargets()
     {
         return numberOfTargets;
@@ -90,24 +87,6 @@ public class TileMapManager : MonoBehaviour
     {
         numberOfTargets = nrOfTargets;
     }
-
-
-    //public bool IsBoxOnTarget(string spriteName)
-    //{
-    //    if (levelManager.GoalTargets == null) return false;
-
-    //    Vector3Int tileCellPosition = levelManager.GoalTargets.WorldToCell(transform.position);
-
-    //    Sprite spriteResult = levelManager.GoalTargets.GetSprite(tileCellPosition);
-
-    //    if (spriteResult == null) return false; // No sprite in this tile.
-
-    //    string nameResult = spriteResult.name;
-
-    //    bool result = nameResult.Equals(spriteName);
-
-    //    return result; // Yes, found sprite.
-    //}
 
     public void MoveTriggerSprite(Vector3Int vector, Vector3 usedVector, Vector3 position)
     {

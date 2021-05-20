@@ -1,4 +1,6 @@
 // Written by Lee Sandberg
+// © Copyright 2021 Lee Sandberg
+// Lee.Sandberg@gmail.com
 
 using System.Collections;
 using System.Collections.Generic;

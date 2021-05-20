@@ -1,4 +1,6 @@
 // Written by Lee Sandberg
+// © Copyright 2021 Lee Sandberg
+// Lee.Sandberg@gmail.com
 
 using System.Collections;
 using System.Collections.Generic;
@@ -9,19 +11,20 @@ using UnityEngine.SceneManagement;
 public class MenuManager : MonoBehaviour
 {
     // Todo: Hook up in editor.
-    public GameObject NextLevelButton;  // Todo: use type Button.
-    public GameObject DropDownMenu;     // Todo: use Dropdown.
-    public GameObject RecordTimeText;   // Todo: use Text.
-    public GameObject TimeText;
-    public GameObject ButtonMenu;
-    public GameObject ResetButton;
-    public GameObject GameOverText;
+    public Button NextLevelButton;  
+    public Dropdown DropDownMenu;     
+    public Text RecordTimeText;   
+    public Text TimeText;
+    public Button MenuButton;
+    public Button ResetButton;
+    public Text GameOverText;
+    public Button QuitButton;
 
     private void Awake()
     {
-        DropDownMenu.GetComponent<Dropdown>().value = -1;
+        DropDownMenu.gameObject.GetComponent<Dropdown>().value = -1;
         // Todo: add RemoveListner when it quits or loads level.
-        DropDownMenu.SetActive(false);
+        DropDownMenu.gameObject.SetActive(false);
         Dropdown dropdown = DropDownMenu.GetComponent<Dropdown>();
         // Todo: It´s connected from the editor as well, fix.
         dropdown.onValueChanged.AddListener(delegate {
@@ -38,29 +41,30 @@ public class MenuManager : MonoBehaviour
         string levelName = change.options[change.value].text;
         float levelTime = GetComponent<StoreManager>().GetTimeRecordOfLevel(levelName);
         string recordTimeText = GetComponent<Timer>().ElapsedTimeFloatToString(levelTime);
-        RecordTimeText.SetActive(true);
+        RecordTimeText.gameObject.SetActive(true);
         RecordTimeText.GetComponent<Text>().text = recordTimeText;
     }
 
-    // Next Level button. DON'T remove.
+    // UI Next Level button. DON'T remove.
     public void NextLevel()
     {
         GetComponent<GameManager>().NextLevel();     
     }
 
-    // Next Level button. DON'T remove.
+    // UI Next Level button. DON'T remove.
     public void ResetLevel()
     {
         GetComponent<GameManager>().ResetLevel();
     }
 
-    // Quit button. DON'T remove.
+    // UI Quit button. DON'T remove.
     public void QuitGame()
     {
+        HideAllUserInterfaces();
         GetComponent<GameManager>().QuitGame();
     }
 
-    // Menu button. DON'T remove.
+    // UI Menu button. DON'T remove.
     public void DisplayDropDownMenu()
     {
         // Unity doesn't support ONE option in Dropdown menu, so just present the time.
@@ -70,7 +74,7 @@ public class MenuManager : MonoBehaviour
             float levelTime = GetComponent<StoreManager>().GetTimeRecordOfLevel("SokoLevel1");
 
             recordTimeText = GetComponent<Timer>().ElapsedTimeFloatToString(levelTime);
-            RecordTimeText.SetActive(true);
+            RecordTimeText.gameObject.SetActive(true);
             RecordTimeText.GetComponent<Text>().text = recordTimeText;
 
             return;
@@ -79,7 +83,7 @@ public class MenuManager : MonoBehaviour
         Dropdown dropdown = DropDownMenu.GetComponent<Dropdown>();
         List<string> dropOptions = new List<string>();
 
-        if (DropDownMenu.activeSelf == false) DropDownMenu.SetActive(true);
+        if (DropDownMenu.gameObject.activeSelf == false) DropDownMenu.gameObject.SetActive(true);
         dropdown.ClearOptions();
         dropOptions.Clear();
 
@@ -92,34 +96,64 @@ public class MenuManager : MonoBehaviour
         DropDownMenu.GetComponent<Dropdown>().value = -1; // Todo: remove if not needed.   
     }
 
-    public void RemoveAllDropDownListners()
-    {
-        DropDownMenu.GetComponent<Dropdown>().onValueChanged.RemoveAllListeners();
-    }
-
     public void SetNextLevelButtonActive(bool active)
     {
-        NextLevelButton.SetActive(active);
+        NextLevelButton.gameObject.SetActive(active);
     }
 
-    public void SetLevelButtonActive(bool active)
+    public void HideAllUserInterfaces()
     {
-        NextLevelButton.SetActive(active);
+        MenuButton.gameObject.SetActive(false);
+        ResetButton.gameObject.SetActive(false);
+        DropDownMenu.gameObject.SetActive(false);
+        TimeText.gameObject.SetActive(false);
+        RecordTimeText.gameObject.SetActive(false);
+        QuitButton.gameObject.SetActive(false);
     }
 
-    public void SetGameOverTextActive(bool active)
+    public void SetMenuButtonActive(bool state)
     {
-        NextLevelButton.SetActive(active); 
+        MenuButton.gameObject.SetActive(state);
+    }
+
+    public void SetResetButtonActive(bool state)
+    {
+        ResetButton.gameObject.SetActive(state);
+    }
+
+    public void SetDropDownMenuActive(bool state)
+    {
+        DropDownMenu.gameObject.SetActive(state);
+    }
+
+    public void SetTimeTextActive(bool state)
+    {
+        TimeText.gameObject.SetActive(state);
+    }
+
+    public void SetRecordTimeTextActive(bool state)
+    {
+        RecordTimeText.gameObject.SetActive(state);
+    }
+
+    public void SetQuitButtonActive(bool state)
+    {
+        QuitButton.gameObject.SetActive(state);
+    }
+
+    public void SetGameOverTextActive(bool state)
+    {
+       GameOverText.gameObject.SetActive(state);
     }
 
     public void HideButtonsAndMenus(bool hide)
     {
         if (hide)
         {
-            RecordTimeText.SetActive(false);
-            DropDownMenu.SetActive(false);
-            NextLevelButton.SetActive(false);
-            GameOverText.SetActive(false);
+            RecordTimeText.gameObject.SetActive(false);
+            DropDownMenu.gameObject.SetActive(false);
+            NextLevelButton.gameObject.SetActive(false);
+            GameOverText.gameObject.SetActive(false);
         }
     }
 
@@ -127,11 +161,11 @@ public class MenuManager : MonoBehaviour
     {
         if (hide)
         {
-            GameOverText.SetActive(false);
+            GameOverText.gameObject.SetActive(false);
         }
         else
         {
-            GameOverText.SetActive(false);
+            GameOverText.gameObject.SetActive(false);
         }
     }
 

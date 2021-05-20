@@ -8,9 +8,8 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    public static Timer instance;
-
-    public Text timerText;
+    // UI timerText assigned in editor.
+    public Text         timerText;
 
     private TimeSpan    timePlaying;
     private bool        timerGoing;
@@ -26,11 +25,6 @@ public class Timer : MonoBehaviour
     public string GetElapsedTimeAsString()
     {
         return timePlayStr; ;
-    }
-
-    private void Awake()
-    {
-        instance = this;
     }
 
     // Start is called before the first frame update.
@@ -73,7 +67,7 @@ public class Timer : MonoBehaviour
             elapsedTime += Time.deltaTime;
             timePlayStr = ElapsedTimeFloatToString(elapsedTime);
             timerText.text = timePlayStr;
-            yield return null; // Get back to rendering the rest of the frame.
+            yield return null;
         }
     }
 }

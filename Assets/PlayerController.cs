@@ -1,4 +1,6 @@
 // Written by Lee Sandberg
+// © Copyright 2021 Lee Sandberg
+// Lee.Sandberg@gmail.com
 
 using System.Collections;
 using System.Collections.Generic;
@@ -95,7 +97,7 @@ public class PlayerController : MonoBehaviour
             // Check for Target sprite in cell.
             if (sprite.name.Equals(targetSpriteName))
             {
-                // Debug.Log("Got that one right!");
+                // Got that one right.
                 pushedBox.GetComponent<Box>().SetOnTarget(true);
             }
             else
@@ -120,7 +122,7 @@ bool IsBoxOnTarget(GameObject pushedBox)
             // Check for Target sprite in cell.
             if (sprite.name.Equals(targetSpriteName))
             {
-               // Debug.Log("Got that one right!");
+               // Got that one right.
                 pushedBox.GetComponent<Box>().SetOnTarget(true);
                 return true;
             }

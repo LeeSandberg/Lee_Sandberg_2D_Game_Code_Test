@@ -318,7 +318,7 @@ GameObject:
   - component: {fileID: 107236819}
   - component: {fileID: 107236818}
   m_Layer: 5
-  m_Name: TimeText
+  m_Name: Text Time
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -832,7 +832,7 @@ GameObject:
   - component: {fileID: 603695269}
   - component: {fileID: 603695268}
   m_Layer: 5
-  m_Name: Quit Game
+  m_Name: Button Quit Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1178,7 +1178,7 @@ GameObject:
   - component: {fileID: 1069023333}
   - component: {fileID: 1069023332}
   m_Layer: 5
-  m_Name: Game Over
+  m_Name: Text Game Over
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1946,7 +1946,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d3dd39f743df14086d5155f9b9ccc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 0}
 --- !u!114 &1543195196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1971,13 +1970,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8dfbfce1eb805648bfa00ee0a3e1d31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NextLevelButton: {fileID: 1004145278}
-  DropDownMenu: {fileID: 1302221447}
-  RecordTimeText: {fileID: 2112369042}
-  TimeText: {fileID: 107236816}
-  ButtonMenu: {fileID: 1558181484}
-  ResetButton: {fileID: 1164182795}
-  GameOverText: {fileID: 1069023330}
+  NextLevelButton: {fileID: 1004145280}
+  DropDownMenu: {fileID: 1302221449}
+  RecordTimeText: {fileID: 2112369044}
+  TimeText: {fileID: 107236818}
+  MenuButton: {fileID: 1558181486}
+  ResetButton: {fileID: 1164182797}
+  GameOverText: {fileID: 1069023332}
+  QuitButton: {fileID: 603695268}
 --- !u!114 &1543195198
 MonoBehaviour:
   m_ObjectHideFlags: 0
