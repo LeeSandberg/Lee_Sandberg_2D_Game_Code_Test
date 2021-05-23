@@ -28,6 +28,9 @@
 // Future work could use rule tiles in Tilemap extra. https://www.youtube.com/watch?v=Ky0sV9pua-E
 //
 // And dynamic 2D lights with normal maps on sprites. https://www.youtube.com/watch?v=48dsapjS55k
+// URP Universial Render pipe har tagit över Light Weight Render. 
+//
+// Make a custom renderer https://www.youtube.com/watch?v=szsWx9IQVDI
 //
 // Use of TileBase when create your own tile classes.
 //

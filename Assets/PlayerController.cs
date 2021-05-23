@@ -146,14 +146,34 @@ bool IsBoxOnTarget(GameObject pushedBox)
 
         if (direction == new Vector3(1f, 0f, 0f))
         {
+
+            // Have the character facing the direction it's heading.
             usedVector = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f);
+            if (usedVector.x < 0)
+            {
+                SpriteRenderer spriteRendere = GetComponent<SpriteRenderer>();
+                if (spriteRendere && spriteRendere.flipX == false) 
+                {
+                    spriteRendere.flipX = true;
+                }
+            }
+            else
+            {
+                SpriteRenderer spriteRendere = GetComponent<SpriteRenderer>();
+                if (spriteRendere && spriteRendere.flipX == true)
+                {
+                    spriteRendere.flipX = false;
+                }
+            }
         }
         else
         {
             usedVector = new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f);
         }
 
-        if (transform.childCount == 0) // Player is not pushing a box.
+        
+
+        if (transform.childCount == 1) // Player is not pushing a box. (+1 was added for the attached point light)-
         {
             // Check for obstruction.
             justInFront = levelManager.StaticObsticals.GetSprite(levelManager.StaticObsticals.WorldToCell(TargetPoint.position + usedVector));
@@ -200,35 +220,41 @@ bool IsBoxOnTarget(GameObject pushedBox)
         else // Maybe the player is pushing a box, if so double the distance.
         {
             // If player is pushing the box from a box target, decrease the target count.
-            GameObject pushedBox = gameObject.transform.GetChild(0).gameObject;
-            if (pushedBox) RemoveBoxFromTarget(pushedBox); // It may or may not be pushing. Be a child of player. 
+            Transform pushedBoxTransform = gameObject.transform.gameObject.transform.Find("box");
+            GameObject pushedBox = null;
+            if (pushedBoxTransform) pushedBox = pushedBoxTransform.gameObject;
 
-            // First check that we have a box in front and not on the side of, or else drop "pushed" box.
-            justInFront = levelManager.BoxesAndCharacter.GetSprite(levelManager.BoxesAndCharacter.WorldToCell(TargetPoint.position + usedVector));
-
-            if (!justInFront) // justInFront
+            if (pushedBox)
             {
-                pushedBox = gameObject.transform.GetChild(0).gameObject;
-                if (pushedBox)
+                RemoveBoxFromTarget(pushedBox); // It may or may not be pushing. Be a child of player. 
+
+                // First check that we have a box in front and not on the side of, or else drop "pushed" box.
+                justInFront = levelManager.BoxesAndCharacter.GetSprite(levelManager.BoxesAndCharacter.WorldToCell(TargetPoint.position + usedVector));
+
+                if (!justInFront) // justInFront
                 {
-                    DropPushedBox(pushedBox);
+                    pushedBox = gameObject.transform.Find("box").gameObject; // Todo: Remove.
+                    if (pushedBox)
+                    {
+                        DropPushedBox(pushedBox);
+                    }
+                    checkDistance = 1f;
                 }
-                checkDistance = 1f;
-            }
-            else // Yes, pushing a cube in front.
-            {
-                checkDistance = 2f;
-                // Check what´s in front of the pushed box.
-
-                // Check for walls in front of pushed box.
-                isWallInFrontOfPushedBox = levelManager.StaticObsticals.GetSprite(levelManager.StaticObsticals.WorldToCell(TargetPoint.position + checkDistance * usedVector));
-                // Check for other boxes in front of pushed box.
-                isBoxInFrontOfPushedBox = levelManager.BoxesAndCharacter.GetSprite(levelManager.BoxesAndCharacter.WorldToCell(TargetPoint.position + checkDistance * usedVector));
-
-                if (!isWallInFrontOfPushedBox || !isBoxInFrontOfPushedBox)
+                else // Yes, pushing a cube in front.
                 {
-                    // Player can't move further in this direction.
-                    usedVector = new Vector3(0f, 0f, 0f);
+                    checkDistance = 2f;
+                    // Check what´s in front of the pushed box.
+
+                    // Check for walls in front of pushed box.
+                    isWallInFrontOfPushedBox = levelManager.StaticObsticals.GetSprite(levelManager.StaticObsticals.WorldToCell(TargetPoint.position + checkDistance * usedVector));
+                    // Check for other boxes in front of pushed box.
+                    isBoxInFrontOfPushedBox = levelManager.BoxesAndCharacter.GetSprite(levelManager.BoxesAndCharacter.WorldToCell(TargetPoint.position + checkDistance * usedVector));
+
+                    if (!isWallInFrontOfPushedBox || !isBoxInFrontOfPushedBox)
+                    {
+                        // Player can't move further in this direction.
+                        usedVector = new Vector3(0f, 0f, 0f);
+                    }
                 }
             }
         }
@@ -269,10 +295,10 @@ bool IsBoxOnTarget(GameObject pushedBox)
             transform.position = transform.position;
 
             // Is character pushing?
-            if (transform.childCount >= 1)
+            if (transform.childCount >= 2) // Added +1 for the point light child.
             {
                 // Release any child box objects that we where pushing as we arrived.
-                GameObject pushedBox = gameObject.transform.GetChild(0).gameObject;
+                GameObject pushedBox = gameObject.transform.Find("box").gameObject;
 
                 if (pushedBox)
                 {
