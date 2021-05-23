@@ -13,12 +13,11 @@ My coding is done in passes.
 
 The diffrent passes have very different focus.
 
-* Keep broken code and return to them later, rather than obsess over them.
 * Go through what functions and variables isn't used and remove them.
-* Organizing out the code from one place, to several managers.
+* Organize the code from one place, to several managers.
 * Writing test functions.
 * Debugging.
-* Good name convetions.
+* Good name conventions.
 * Scope of variables.
 * Completness.
 * Pritify.
@@ -29,25 +28,24 @@ The diffrent passes have very different focus.
 * API Design.
 * Software design.
 
-First pass everything is testing, maybe all the code in one file. Alot of code in one function. No real coding style either. A lot of querky code text basically.
+First pass everything is testing, maybe all the code in one file. A lot of code in one function. No real coding style either. A lot of querky code text basically.
 Its not at all neat and organized. Its just brain dump, Try and error.
 
-This one used TileMap in Unity which I never used. To make things more interesting I added the preview of Tilemap extra.
+TileMap in Unity, first time. To make things more interesting the project uses the Unity preview of Tilemap extra.
 
-I wanted to use the preview because, at time i couldn't find away in Unity to attach a script to sprite.
+Reason: At time i couldn't find away in Unity to attach a script to sprite.
 I later got to know about using TileBase and inherit from that one and add code to tiles.
 
 https://docs.unity3d.com/Manual/Tilemap-ScriptableTiles.html?_ga=2.137354681.847206861.1620301011-893911062.1616429622
 
-But the code took another rout using the Tilemap extra preview.
+But the code took another route when using the Unity Tilemap extra preview.
 
-It adds brushes to the tile map palette. Like drawing Tiles that are GameObjects witm Sprite renders on them.
+It adds brushes to the tile map palette. Like drawing Tiles that are GameObjects with Sprite renders on them.
 So You can add script to the GameObject.
 
-Great, but Tilemap can us back what gameobject tile is in a certain tile.
-Tilemap can only do that  with  sprites.
+Great, but Tilemap didn't return back what gameobject is in a certain tile. Unity tilemap can only do that with  sprites not game objects.
 
-So if you look under the boxes (that are gameobjects with sprite renders) there is actuallyu a transparant sprite hiding.
+So if you look under the boxes (that are gameobjects with sprite renders) there is actually a transparant sprite hiding.
 Which we also have to move when the gameobject box moves. The Box moves by getting to be a child och character for a while and moves with the character.
 However sprite under the box moves one tile at a time.
 
