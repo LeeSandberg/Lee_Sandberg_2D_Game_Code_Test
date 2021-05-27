@@ -2,9 +2,6 @@
 
 Uses Unity Tilemap and it's preview Tilemap extra https://forum.unity.com/threads/tilemap-extras-preview-package-is-now-available.962664/
 
-
-The first commit, the state of it is broken after a reorganisation of the code after all four levels where introduced. 
-
 The parts are tested together with one level, first. 
 
 The managers was added and code has been moved out to the managers. 
