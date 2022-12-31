@@ -1,6 +1,6 @@
 # Lee_Sandberg_Sozap_Code_Test
 Uses Unity Tilemap and it's preview Tilemap extra https://forum.unity.com/threads/tilemap-extras-preview-package-is-now-available.962664/ 
-
+(Disclaimer: which at the time was the codes largest flaw as it fellt un finnished at the time and I had to make a lot of coding to compensate for that, I would have saved time not using it. Later I changed the renderer in Unity and wanted to add a dynamic spotlight to the player character, where I just added an uggly magic number in the number of child nodes the player character can have. This is a big no, no in production code. This code was intially a work test assignment, with a long laundry list of features they wanted, so some of the code in here is just too complete that featurelist they wanted.)
 The parts are tested together with one level, first. 
 
 The managers was added and code has been moved out to the managers. 
